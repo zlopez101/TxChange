@@ -12,10 +12,11 @@ from TxChange.models import User, Ticket
 
 
 class RegistrationForm(FlaskForm):
-    email = StringField("email address", validators=[Email(), DataRequired()])
-    password = StringField("password por favor", validators=[DataRequired()])
-    rememberme = BooleanField()
-    submit = SubmitField()
+	email = StringField("email address", validators=[Email(), DataRequired()])
+	password = StringField("password por favor", validators=[DataRequired()])
+	confirm_password = StringField("confirm password", validators=[DataRequired(), EqualTo('password')])
+	rememberme = BooleanField()
+	submit = SubmitField()
 
 
 class LoginForm(FlaskForm):
