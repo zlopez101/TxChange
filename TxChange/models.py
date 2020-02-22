@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(), nullable=False, unique=True)
     password = db.Column(db.String(40), nullable=False)
     profile_pic = db.Column(db.String(), nullable=False, default="default.jpg")
-    tickets = db.relationship("Ticket", backref="gg", lazy=True)
+    tickets = db.relationship("Ticket", backref="gggit", lazy=True)
 
     def __repr__(self):
         return f"{self.email}"
