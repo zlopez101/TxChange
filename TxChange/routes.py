@@ -18,7 +18,8 @@ def about():
 
 @app.route("/discover")
 def discover():
-    return render_template("discover.html", title="Discover")
+	tickets = Ticket.query.all()
+	return render_template("discover.html", title="Discover", tickets=tickets)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -59,9 +60,10 @@ def logout():
 
 # need to update to spontaneously create url for each unique user
 @app.route("/profile", methods=["GET", "POST"])
+@login_required
 def profile():
-    return render_template("profile.html", title="My Profile Page")
-
+	t_sell = Ticket.query.filter_by(owner=current_user).all()
+	return render_template("profile.html", title="Profile Page",tickets=t_sell)
 
 @app.route("/NewTicket", methods=["GET", "POST"])
 @login_required
@@ -72,7 +74,7 @@ def new_ticket():
             artist=form.artist.data,
             venue=form.venue.data,
             price=form.price.data,
-            concert_date_time=form.concert_date_time.data,
+						concert_date_time=form.concert_date_time.data,
             owner=current_user,
         )
         db.session.add(ticket)
@@ -82,4 +84,22 @@ def new_ticket():
             "success",
         )
         return redirect(url_for("home"))
-    return render_template("new_ticket.html", title="Post a New Ticket", form=form)
+    return render_template("create_ticket.html", title="Post a New Ticket", form=form)
+
+'''
+@app.route("/ticket/<int:ticket_id", methods=['GET', "POST"])
+def ticket(ticket_id):
+	ticket = Ticket.query.get_or_404(ticket_id)
+	if ticket.owner != current_user:
+		form = BidOnTicket()
+		if form.validate_on_submit():
+
+		
+	
+	return(render_template('ticket.html', title="Ticket", form=form))
+'''
+
+
+
+
+		

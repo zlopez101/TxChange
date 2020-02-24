@@ -1,23 +1,17 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 <div class="continer">
 	<div class="row">
+		{% for ticket in tickets %}
 		<div class="card" style="width: 18rem;">
-  		<img src="static/mac.jpg" class="card-img-top" alt="...">
+			<img src="static/mac.jpg" class="card-img-top" alt="...">
 	<div class="card-body">
-    <h5 class="card-title">Mac Demarco</h5>
-    <p class="card-text">Mac Demarco is playing tonight at Teragram Ballroom</p>
+    <h5 class="card-title">{{ ticket.artist}}</h5>
+    <p class="card-text">{{ ticket.artist}} at {{ ticket.venue}} on {{ ticket.concert_date_time}}</p>
     <a href="#" class="btn btn-primary">Place a bid</a>
   </div>
 </div>		
-<div class="card" style="width: 18rem;">
-  <img src="static/tame.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Tame Impala</h5>
-    <p class="card-text">KP wants to play for you</p>
-    <a href="#" class="btn btn-primary">place a bid</a>
-  </div>
-</div>
+{% endfor %}
 	</div>
 </div>
+
 {% endblock%}

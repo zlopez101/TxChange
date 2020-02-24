@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 import os
-from datetime import datetime
 
 key = os.urandom(32)
 app = Flask(__name__)

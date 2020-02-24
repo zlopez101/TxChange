@@ -8,8 +8,7 @@ So...I decided to do something about it. And we'll see where it goes.
 
 ## Completed So Far
 1. User registration and Login.
-2. Database initiation
-3. Ticket 
+2. database with users and tickets
 
 
 ## TO DO
