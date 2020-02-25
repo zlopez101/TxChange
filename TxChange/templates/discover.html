@@ -7,7 +7,7 @@
 			<div class="card-body">
 				<h5 class="card-title">{{ ticket.artist}}</h5>
 				<p class="card-text">{{ ticket.artist}} at {{ ticket.venue}} on {{ ticket.concert_date_time}}</p>
-				<a href="{{ url_for('ticket', ticket_id=ticket.id}}" class="btn btn-primary">Place a bid</a>
+				<a href="{{ url_for('ticket', ticket_id=ticket.id)}}" class="btn btn-primary">Place a bid</a>
 			</div>
 		</div>
 		{% endfor %}
