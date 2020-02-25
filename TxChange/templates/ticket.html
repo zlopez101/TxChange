@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card mb-3">
+    <img src="static/default.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">{{ ticket.amount }}</h5>
+        <p class="card-text">Playing at {{ ticket.venue }} on {{ ticket.concert_date_time }}</p>
+        <p class="card-text"><small class="text-muted">Price: ${{ ticket.price}}</small></p>
+        <p class="card-text"><small class="text-muted">Current bid: ${{ ticket.current_best_bid}}</small></p>
+    </div>
+</div>
+<div class='content-section'>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class='form-group'>
+            <legend class='border-bottom mb-4'>Make your Bid!</legend>
+            <div class='form-group'>
+                <div class='form-group'>
+                    {{ form.amount.label(class='form=control-label') }}
+                    {% if form.amount.errors %}
+                    {{ form.amount(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.amount.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.amount(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+        </fieldset>
+        <div class='form-group'>
+            {{ form.submit(class='btn btn-outline-info') }}
+        </div>
+    </form>
+</div>
+{% endblock %}

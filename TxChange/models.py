@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(40), nullable=False)
     profile_pic = db.Column(db.String(), nullable=False, default="default.jpg")
     tickets = db.relationship("Ticket", backref="owner", lazy=True)
-		
+
     def __repr__(self):
         return f"{self.email}"
 
@@ -23,16 +23,15 @@ class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artist = db.Column(db.String(80), nullable=False)
     venue = db.Column(db.String(80))
-    date_posted = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     price = db.Column(db.Integer, nullable=False)
     concert_date_time = db.Column(db.DateTime)
     owned_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    current_best_bidder = db.relationship(
+        "Bidder", db.ForeignKey("bidder.id"), default=None
+    )
+    current_best_bid = db.Column(db.Integer)
 
     def __repr__(self):
-        return f"Ticket({self.artist} at {self.venue})"
+        return f"Ticket({self.artist} at {self.venue} on {self.concert_date_time})"
 
-
-
-
-	
