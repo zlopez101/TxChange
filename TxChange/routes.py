@@ -13,6 +13,7 @@ def home():
 
 @app.route("/about")
 def about():
+    print(type)
     return render_template("about.html", title="this is the about page")
 
 
@@ -62,8 +63,8 @@ def logout():
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-		t_sell = Tickey.query.filter()
-    t_sell = Ticket.query.join(t)(owner=current_user).all()
+    t_sell = Ticket.query.join(User, User.id == Ticket.owner).all()
+    # t_sell = Ticket.query.join(t)(owner=current_user).all()
     return render_template("profile.html", title="Profile Page", tickets=t_sell)
 
 
@@ -77,8 +78,8 @@ def new_ticket():
             venue=form.venue.data,
             price=form.price.data,
             concert_date_time=form.concert_date_time.data,
-            owner=current_user,
         )
+        ticket.owner.append(current_user)
         db.session.add(ticket)
         db.session.commit()
         flash(
@@ -87,20 +88,20 @@ def new_ticket():
         )
         return redirect(url_for("home"))
     return render_template("create_ticket.html", title="Post a New Ticket", form=form)
-current_user
+
 
 @app.route("/ticket/<int:ticket_id>", methods=["GET", "POST"])
 def ticket(ticket_id):
-	ticket = Ticket.query.get_or_404(ticket_id)
-	form = BidOnTicket(ticket_id)
-	if form.validate_on_submit():
-		#ticket.current_best_bid = form.amount.data
-		#ticket.current_best_bidder = current_user
-		#db.session.commit()
-		flash(
-        f"You entered a bid of ${form.amount.data} for {ticket.artist} at{ticket.venue} on {ticket.concert_date_time}!",
-        "success",
-    )
-		return redirect(url_for("home"))
-	return render_template("ticket.html", title="Ticket", form=form,ticket=ticket)
+    ticket = Ticket.query.get_or_404(ticket_id)
+    form = BidOnTicket(ticket_id)
+    if form.validate_on_submit():
+        # ticket.current_best_bid = form.amount.data
+        # ticket.current_best_bidder = current_user
+        # db.session.commit()
+        flash(
+            f"You entered a bid of ${form.amount.data} for {ticket.artist} at{ticket.venue} on {ticket.concert_date_time}!",
+            "success",
+        )
+        return redirect(url_for("home"))
+    return render_template("ticket.html", title="Ticket", form=form, ticket=ticket)
 
