@@ -63,9 +63,10 @@ def logout():
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    t_sell = Ticket.query.join(User, User.id == Ticket.owner).all()
-    # t_sell = Ticket.query.join(t)(owner=current_user).all()
-    return render_template("profile.html", title="Profile Page", tickets=t_sell)
+	t_sell = Ticket.query.filter_by(owner=current_user).all()
+	#t_sell = db.session.query(User).join(Ticket).filter(User.id==ticket.owner).all()
+	#t_sell = User.query.filter_by(id=current_user.id).tickets
+	return render_template("profile.html", title="Profile Page", tickets=t_sell)
 
 
 @app.route("/NewTicket", methods=["GET", "POST"])
@@ -78,8 +79,8 @@ def new_ticket():
             venue=form.venue.data,
             price=form.price.data,
             concert_date_time=form.concert_date_time.data,
+						owner=current_user
         )
-        ticket.owner.append(current_user)
         db.session.add(ticket)
         db.session.commit()
         flash(

@@ -16,3 +16,4 @@ So...I decided to do something about it. And we'll see where it goes.
 1. Let google/facebook handle sign-in through Oauth
 2. How do current Ticket validation schemes work
 3. Tickets also have seat numbers. -added a seat # to 
+4. How to build trust on network
