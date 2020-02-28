@@ -28,7 +28,7 @@ class Ticket(db.Model):
 	date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	price = db.Column(db.Integer, nullable=False)
 	concert_date_time = db.Column(db.DateTime)
-	current_best_bid = db.Column(db.Integer)
+	current_best_bid = db.Column(db.Integer, default=0)
 	_owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 	_current_best_bidder_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 	owner = db.relationship("User", foreign_keys=[_owner_id], backref="tickets", lazy=True)
@@ -37,4 +37,3 @@ class Ticket(db.Model):
 
 	def __repr__(self):
 		return f"Ticket({self.artist} at {self.venue})"
-

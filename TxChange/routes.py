@@ -1,9 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
 from TxChange import app, db, bcrypt
-from TxChange.forms import RegistrationForm, LoginForm, NewTicket, BidOnTicket
+from TxChange.forms import RegistrationForm, LoginForm, NewTicket, Ticketbid, Test
 from TxChange.models import User, Ticket
 from flask_login import current_user, login_user, logout_user, login_required
-from datetime import datetime
 
 
 @app.route("/")
@@ -64,8 +63,6 @@ def logout():
 @login_required
 def profile():
 	t_sell = Ticket.query.filter_by(owner=current_user).all()
-	#t_sell = db.session.query(User).join(Ticket).filter(User.id==ticket.owner).all()
-	#t_sell = User.query.filter_by(id=current_user.id).tickets
 	return render_template("profile.html", title="Profile Page", tickets=t_sell)
 
 
@@ -90,19 +87,54 @@ def new_ticket():
         return redirect(url_for("home"))
     return render_template("create_ticket.html", title="Post a New Ticket", form=form)
 
-
-@app.route("/ticket/<int:ticket_id>", methods=["GET", "POST"])
+@app.route("/ticket/<ticket_id>/bid", methods=["GET", "POST"])
+@login_required
 def ticket(ticket_id):
-    ticket = Ticket.query.get_or_404(ticket_id)
-    form = BidOnTicket(ticket_id)
-    if form.validate_on_submit():
-        # ticket.current_best_bid = form.amount.data
-        # ticket.current_best_bidder = current_user
-        # db.session.commit()
-        flash(
-            f"You entered a bid of ${form.amount.data} for {ticket.artist} at{ticket.venue} on {ticket.concert_date_time}!",
-            "success",
-        )
-        return redirect(url_for("home"))
-    return render_template("ticket.html", title="Ticket", form=form, ticket=ticket)
+	form = Test()
+	ticket = Ticket.query.get_or_404(ticket_id)
+	if form.validate_on_submit():
+		if form.amount.data <= ticket.current_best_bid:
+			flash("Not high enough!", "danger")
+			return redirect(url_for('discover'))
+		ticket.current_best_bid = form.amount.data
+		ticket.current_best_bidder = current_user
+		db.session.add(ticket)
+		db.session.commit()
+		flash("Bid Entered", "success")
+		return redirect(url_for("home"))
+	return render_template('ticket.html', title="Bid", form=form, ticket=ticket)
+
+
+@app.route('/interestedin/<ticket_id>/', methods=["GET, POST"])
+@login_required
+def interested(ticket_id):
+	ticket = Ticket.query.get_or_404(ticket_id)
+	ticket.user_interested.append(current_user)
+	db.session.add(ticket)
+	db.session.commit()
+	flash(f"You saved ticket for {ticket.artist} at {ticket.venue}.", "success")
+	return redirect(url_for('profile'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route("/test", methods=["GET", "POST"])
+def test():
+	form = Ticketbid()
+	if form.validate_on_submit():
+		flash('test worked')
+		return redirect(url_for("home"))
+	return render_template('test.html', title="test", form=form)
 

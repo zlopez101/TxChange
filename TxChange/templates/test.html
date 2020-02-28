@@ -1,14 +1,5 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="card mb-3">
-    <img src="static/default.JPG" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">{{ ticket.amount }}</h5>
-        <p class="card-text">Playing at {{ ticket.venue }} on {{ ticket.concert_date_time }}</p>
-        <p class="card-text"><small class="text-muted">Price: ${{ ticket.price}}</small></p>
-        <p class="card-text"><small class="text-muted">Current bid: ${{ ticket.current_best_bid}}</small></p>
-    </div>
-</div>
 <div class='content-section'>
     <form method="POST" action="">
         {{ form.hidden_tag() }}
