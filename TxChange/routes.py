@@ -63,7 +63,7 @@ def logout():
 @login_required
 def profile():
     t_sell = Ticket.query.filter_by(owner=current_user).all()
-    t_interest = User.query.filter_by(id=current_user).first().intereste_in
+    t_interest = User.query.filter_by(id=current_user.id).first().interested_in
     return render_template(
         "profile.html",
         title="Profile Page",

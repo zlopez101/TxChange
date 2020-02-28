@@ -2,14 +2,15 @@
 {% block content %}
 <h2>My Tickets</h2>
 {% for ticket in tickets %}
-<div class="continer">
+<div class="container">
   <div class="row">
-    <div class="card" style="width: 18rem;">
+    <div class="card mb-4" style="width: 18rem;">
       <img src="static/mac.jpg" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{ ticket.artist }} at {{ ticket.venue }}</h5>
         <p class="card-text">{{ ticket.artist }} at {{ ticket.venue }} on {{ ticket.concert_date_time }}</p>
-        <a href="#" class="btn btn-primary">Asking price is {{ ticket.price }}</a>
+        <a href="{{ url_for('ticket', ticket_id=ticket.id) }}" class="btn btn-primary">Asking price is
+          {{ ticket.price }}</a>
       </div>
     </div>
   </div>
@@ -17,14 +18,15 @@
 {% endfor %}
 <h3>Tickets I am interested In</h3>
 {% for ticket in interestingtickets %}
-<div class="continer">
+<div class="container">
   <div class="row">
-    <div class="card" style="width: 18rem;">
+    <div class="card mb-4" style="width: 18rem;">
       <img src="static/mac.jpg" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{ ticket.artist }} at {{ ticket.venue }}</h5>
         <p class="card-text">{{ ticket.artist }} at {{ ticket.venue }} on {{ ticket.concert_date_time }}</p>
-        <a href="#" class="btn btn-primary">Asking price is {{ ticket.price }}</a>
+        <a href="{{ url_for('ticket', ticket_id=ticket.id) }}" class="btn btn-primary">Asking price is
+          {{ ticket.price }}</a>
       </div>
     </div>
   </div>
