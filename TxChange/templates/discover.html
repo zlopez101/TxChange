@@ -2,14 +2,15 @@
 <div class="continer">
 	<div class="row">
 		{% for ticket in tickets %}
-		<div class="card" style="width: 18rem;">
-			<img src="static/mac.jpg" class="card-img-top" alt="...">
-			<div class="card-body">
-				<h5 class="card-title">{{ ticket.artist}}</h5>
-				<p class="card-text">{{ ticket.artist}} at {{ ticket.venue}} on {{ ticket.concert_date_time}}</p>
-				<a href="{{ url_for('ticket', ticket_id=ticket.id)}}" class="btn btn-primary">Buy</a>
-				<button type="button" class='btn btn-secondary' data
-				<a href="{{ url_for('interested', ticket_id=ticket.id)}}" class="btn btn-primary">Save</a>
+		<div class='col'>
+			<div class="card border border-dark" style="width: 18rem;">
+				<img src="static/mac.jpg" class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{ ticket.artist}}</h5>
+					<p class="card-text">{{ ticket.artist}} at {{ ticket.venue}} on {{ ticket.concert_date_time}}</p>
+					<a href="{{ url_for('ticket', ticket_id=ticket.id)}}" class="btn btn-primary">Buy</a>
+					<a href="{{ url_for('interested', ticket_id=ticket.id)}}" class="btn btn-primary">Save</a>
+				</div>
 			</div>
 		</div>
 		{% endfor %}
