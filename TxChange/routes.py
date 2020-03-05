@@ -1,3 +1,5 @@
+import secrets
+import os
 from flask import render_template, flash, redirect, url_for, request
 from TxChange import app, db, bcrypt
 from TxChange.forms import RegistrationForm, LoginForm, NewTicket, Ticketbid, Test
@@ -71,27 +73,30 @@ def profile():
         interestingtickets=t_interest,
     )
 
+def save_ticket_picture(form_ticket_pic):
+	#don't want user's picture name to collide with other ticket file names
+	#random hex for base of file name
+	random_name = secrets.token_hex(8)
+	_, f_ext = os.path.splitext(form_ticket_pic.filename)
+	ticket_name = random_name+f_ext
+	ticket_path = os.path.join(app.root_path, 'static/ticket_pics', ticket_name)
+	form_ticket_pic.save(ticket_path)
+
+	return ticket_name
 
 @app.route("/NewTicket", methods=["GET", "POST"])
 @login_required
 def new_ticket():
-    form = NewTicket()
-    if form.validate_on_submit():
-        ticket = Ticket(
-            artist=form.artist.data,
-            venue=form.venue.data,
-            price=form.price.data,
-            concert_date_time=form.concert_date_time.data,
-            owner=current_user,
-        )
-        db.session.add(ticket)
-        db.session.commit()
-        flash(
-            f"A concert ticket for {form.artist.data} at {form.venue.data} on {form.concert_date_time.data} has been created!",
-            "success",
-        )
-        return redirect(url_for("home"))
-    return render_template("create_ticket.html", title="Post a New Ticket", form=form)
+	form = NewTicket()
+	if form.validate_on_submit():
+		if form.ticket_file.data:
+			ticket_file = save_ticket_picture(form.ticket_file.data)
+			ticket = Ticket(artist=form.artist.data,venue=form.venue.data,price=form.price.data,concert_date_time=form.concert_date_time.data, owner=current_user,ticket_pic =ticket_file)
+			db.session.add(ticket)
+			db.session.commit()
+			flash(f"A concert ticket for {form.artist.data} at {form.venue.data} on{form.concert_date_time.data} has been created!","success",)
+			return redirect(url_for("home"))
+	return render_template("create_ticket.html", title="Post a New Ticket", form=form)
 
 
 @app.route("/ticket/<ticket_id>/bid", methods=["GET", "POST"])
@@ -125,7 +130,7 @@ def interested(ticket_id):
 
 @app.route("/test", methods=["GET", "POST"])
 def test():
-    form = Ticketbid()
+    form = Test()
     if form.validate_on_submit():
         flash("test worked")
         return redirect(url_for("home"))

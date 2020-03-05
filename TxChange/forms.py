@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, BooleanField, SubmitField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo
 
@@ -23,11 +24,13 @@ class LoginForm(FlaskForm):
 
 
 class NewTicket(FlaskForm):
-    artist = StringField("Who's playing?", validators=[DataRequired()])
-    venue = StringField("Where's it at?")
-    price = IntegerField("How much?", validators=[DataRequired()])
-    concert_date_time = DateTimeField("When?", format="%m/%d/%Y")
-    submit = SubmitField("Create Ticket")
+	artist = StringField("Who's playing?", validators=[DataRequired()])
+	venue = StringField("Where's it at?")
+	price = IntegerField("How much?", validators=[DataRequired()])
+	concert_date_time = DateTimeField("When?", format="%m/%d/%Y")
+	ticket_file = FileField('Ticket File', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+	submit = SubmitField("Create Ticket")
+
 
 class Test(FlaskForm):
 	amount = IntegerField('Bid Amount', validators=[DataRequired()])

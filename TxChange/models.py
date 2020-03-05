@@ -27,6 +27,7 @@ class Ticket(db.Model):
 	venue = db.Column(db.String(80))
 	date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	price = db.Column(db.Integer, nullable=False)
+	ticket_pic = db.Column(db.String(), nullable=False, default="ticket_default.JPG")
 	concert_date_time = db.Column(db.DateTime)
 	current_best_bid = db.Column(db.Integer, default=0)
 	_owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
