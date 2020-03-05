@@ -1,5 +1,6 @@
 import secrets
 import os
+from PIL import Image
 from flask import render_template, flash, redirect, url_for, request
 from TxChange import app, db, bcrypt
 from TxChange.forms import RegistrationForm, LoginForm, NewTicket, Ticketbid, Test
@@ -80,7 +81,11 @@ def save_ticket_picture(form_ticket_pic):
 	_, f_ext = os.path.splitext(form_ticket_pic.filename)
 	ticket_name = random_name+f_ext
 	ticket_path = os.path.join(app.root_path, 'static/ticket_pics', ticket_name)
-	form_ticket_pic.save(ticket_path)
+
+	output_size = (125, 125)
+	i = Image.open(form_ticket_pic)
+	i.thumbnail(output_size)
+	i.save(ticket_path)
 
 	return ticket_name
 

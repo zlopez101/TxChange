@@ -16,4 +16,5 @@ flask-sqlalchemy = "^2.4"
 flask-wtf = "^0.14.3"
 python = "^3.7"
 wtforms = "^2.2"
+Pillow = "^7.0"
 [tool.poetry.dev-dependencies]
